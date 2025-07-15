@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nathan Juno - 3d Artist</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Newsreader -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader" rel="stylesheet">
+    <script>
+        // Custom Tailwind theme configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Set Newsreader as the default font
+                        sans: ['Newsreader', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Apply the light font-weight globally */
+        body {
+            font-weight: 200;
+        }
+        /* Use a bolder weight for headers for better hierarchy */
+        h1, h2 {
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-200 text-gray-800 font-sans antialiased">
+
+    <!-- LinkedIn and Email Icons Top Right -->
+    <div class="fixed top-4 right-4 z-50 flex space-x-4">
+        <a href="https://www.linkedin.com/in/nathan-juno-6a80242/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400 hover:text-slate-700 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.026-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.379-1.563 2.838-1.563 3.036 0 3.6 2 3.6 4.594v5.602z"/>
+            </svg>
+        </a>
+        <a href="mailto:nathan.juno@gmail.com" aria-label="Send Email">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400 hover:text-slate-700 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <rect x="3" y="5" width="18" height="14" rx="2" stroke-width="2" stroke="currentColor" fill="none"/>
+                <path d="M3 7l9 6 9-6" stroke-width="2" stroke="currentColor" fill="none"/>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Main container -->
+    <div class="container mx-auto px-4 py-8 md:py-16 max-w-screen-lg">
+
+        <main class="flex flex-col items-center text-center">
+
+            <!-- Name Header -->
+            <header class="mb-6">
+                <h1 class="text-10xl md:text-4xl text-slate-700 ">
+                    <!-- TODO: Replace "Your Name" with your actual name -->
+                    Nathan Juno - Freelance 3d Artist
+                </h1>
+            </header>
+
+            <!-- Summary Section -->
+            <section class="max-w-4xl mb-12">
+                <p class="text-lg md:text-12xl text-slate-500 leading-relaxed" style="font-weight: 400;">
+                    <!-- TODO: Replace this with a summary of what you do. -->
+                    With over two decades of experience as a 3D Artist, my work has spanned advertising, architectural visualization, television, and print. As a 3d generalist I have a broad skill set that includes scene layout/gather, modelling, simulation, lighting, shading, multi pass rendering and bash comp.
+                </p>
+                <p class="text-lg md:text-12xl text-slate-500 leading-relaxed" style="font-weight: 400;">
+                    If you believe my skills align with your next exciting project, please feel free to reach out at <a href="mailto:nathan.juno@gmail.com" class="text-slate-700 underline hover:text-slate-900">nathan.juno@gmail.com</a>
+
+                </p>
+            </section>
+
+            <!-- Showreel Section -->
+            <section class="w-full max-w-4xl">
+                <!-- <h2 class="text-2xl md:text-3xl mb-6 text-gray-900 dark:text-white">Showreel</h2>-->
+                <!-- Responsive YouTube Embed Container -->
+                <!-- The 'aspect-video' class maintains a 16:9 aspect ratio -->
+                <div class="aspect-video w-full bg-black rounded-lg shadow-2xl overflow-hidden">
+                    <!-- 
+                        TODO: Replace "your_video_id_here" in the URL below with the ID from your YouTube video.
+                        For example, if your video URL is https://www.youtube.com/watch?v=dQw4w9WgXcQ,
+                        the ID is "dQw4w9WgXcQ".
+                    -->
+                    <iframe
+                        class="w-full h-full"
+                        src="https://www.youtube.com/embed/your_video_id_here"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
