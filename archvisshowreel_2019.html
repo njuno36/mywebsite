@@ -132,13 +132,113 @@
     }
 
     :root {
-      --plyr-color-main: #b7d3ff;
+      --plyr-color-main: #dfeaf8;
       --plyr-control-color: #dfeaf8;
-      --plyr-control-color-hover: #b7d3ff;
-      --plyr-control-background: rgba(47, 58, 63, 0.85);
-      --plyr-control-background-hover: rgba(63, 77, 83, 0.95);
+      --plyr-control-color-hover: #dfeaf8;
+      --plyr-control-background: transparent;
+      --plyr-control-background-hover: transparent;
+      --plyr-range-fill-background: #dfeaf8;
+      --plyr-range-track-background: #2f3a3f;
+      --plyr-range-thumb-background: #dfeaf8;
       --plyr-video-background: #2f3a3f;
       --plyr-menu-background: #2f3a3f;
+    }
+
+    .plyr--video .plyr__controls {
+      background: linear-gradient(180deg, rgba(47, 58, 63, 0) 0%, rgba(47, 58, 63, 0.55) 100%) !important;
+      box-shadow: none;
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
+    .plyr--video:hover .plyr__controls,
+    .plyr--video.plyr--hover .plyr__controls,
+    .plyr--video.plyr--fullscreen .plyr__controls {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .plyr__control {
+      background: transparent !important;
+      color: #dfeaf8 !important;
+      transform: scale(0.95);
+      transform-origin: center;
+    }
+
+    .plyr__control svg {
+      fill: currentColor;
+      width: 1.05em;
+      height: 1.05em;
+    }
+
+    .plyr__control--overlaid,
+    .plyr__control[data-plyr="play"],
+    .plyr__control[data-plyr="pause"] {
+      color: #dfeaf8 !important;
+      background: transparent !important;
+    }
+
+    .plyr__control--overlaid {
+      display: none !important;
+    }
+
+    .video-overlay-play {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      width: 6rem;
+      height: 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: #2f3a3f;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      z-index: 2;
+      pointer-events: auto;
+      opacity: 1;
+      transition: opacity 180ms ease;
+    }
+
+    .video-overlay-play.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .video-overlay-play svg {
+      width: 3.75rem;
+      height: 3.75rem;
+      fill: currentColor;
+    }
+
+    .plyr__progress__buffer,
+    .plyr__progress__played,
+    .plyr__volume__display {
+      color: #dfeaf8 !important;
+      background-color: #dfeaf8 !important;
+    }
+
+    .plyr__progress,
+    .plyr__volume {
+      height: 0.35rem !important;
+      min-height: 0.35rem !important;
+    }
+
+    .plyr__progress input[type="range"],
+    .plyr__volume input[type="range"] {
+      accent-color: #dfeaf8;
+      height: 0.35rem !important;
+      min-height: 0.35rem !important;
+    }
+
+    .plyr__time,
+    .plyr__time + .plyr__time {
+      color: #dfeaf8 !important;
+      background: transparent !important;
+      padding: 0 !important;
     }
   </style>
 </head>
@@ -194,7 +294,7 @@
         <p class="text-md md:text-x1 text-slate-700 dark:text-slate-300 leading-relaxed mb-6 font-light font-body">
           My Architectural Visualisation showreel from 2019 - showing work from approx 2010 - 2018.
         </p>
-        <div class="aspect-video w-full overflow-hidden bg-[#2f3a3f]">
+        <div class="aspect-video relative w-full overflow-hidden bg-[#2f3a3f]">
           <video class="w-full h-full object-cover" controls playsinline preload="metadata">
             <source
               src="https://media.nathanjuno.com/Showreel%20Arch%20Feb19%20Web.mp4"
@@ -243,11 +343,65 @@
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('video').forEach((video) => {
         if (!video.closest('main')) return;
+
+        const wrapper = video.parentElement;
+        if (!wrapper) return;
+
+        wrapper.classList.add('relative');
+
+        let overlayButton = wrapper.querySelector('.video-overlay-play');
+        if (!overlayButton) {
+          overlayButton = document.createElement('button');
+          overlayButton.type = 'button';
+          overlayButton.className = 'video-overlay-play';
+          overlayButton.setAttribute('aria-label', 'Play video');
+          overlayButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>';
+          wrapper.prepend(overlayButton);
+        }
+
         new Plyr(video, {
           controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
           keyboard: { focused: true, global: true },
           ratio: '16:9'
         });
+
+        const updateOverlayButton = () => {
+          const svgPath = overlayButton.querySelector('svg path');
+          const atStart = video.currentTime === 0;
+
+          if (video.ended) {
+            if (svgPath) {
+              svgPath.setAttribute('d', 'M12 5V1L8 5l4 4V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z');
+            }
+            overlayButton.classList.remove('is-hidden');
+            overlayButton.setAttribute('aria-label', 'Replay video');
+          } else if (atStart && video.paused) {
+            if (svgPath) {
+              svgPath.setAttribute('d', 'M8 5v14l11-7z');
+            }
+            overlayButton.classList.remove('is-hidden');
+            overlayButton.setAttribute('aria-label', 'Play video');
+          } else {
+            overlayButton.classList.add('is-hidden');
+          }
+        };
+
+        overlayButton.addEventListener('click', () => {
+          if (video.ended) {
+            video.currentTime = 0;
+          }
+          if (video.paused) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+
+        video.addEventListener('play', updateOverlayButton);
+        video.addEventListener('pause', updateOverlayButton);
+        video.addEventListener('ended', updateOverlayButton);
+        video.addEventListener('seeked', updateOverlayButton);
+        updateOverlayButton();
       });
     });
   </script>
