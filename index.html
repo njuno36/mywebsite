@@ -240,11 +240,67 @@
       background: transparent !important;
       padding: 0 !important;
     }
+    /* Video fills available viewport height and scales by height (no stretching) */
+    .video-fill {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - var(--nav-height, 0px) - var(--footer-height, 0px));
+      overflow: hidden;
+      background: #2f3a3f;
+    }
+
+    /* Preserve 16:9 ratio while scaling to available height without distortion */
+    .video-fill {
+      display: flex;
+      /* anchor player to the bottom of the available area so controls stay fixed */
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* The Plyr container will maintain a 16:9 box that is as tall as possible */
+    .video-fill .plyr {
+      height: 100% !important;
+      max-height: 100% !important;
+      aspect-ratio: 16/9;
+      width: auto !important;
+      max-width: 100%;
+    }
+
+    /* ensure controls are positioned relative to the plyr container */
+    .video-fill .plyr {
+      position: relative;
+    }
+
+    .video-fill .plyr__controls {
+      position: absolute !important;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex !important;
+      justify-content: center !important;
+      transform-origin: center bottom;
+    }
+
+    .video-fill .plyr__video-wrapper {
+      height: 100% !important;
+      max-height: 100% !important;
+      overflow: hidden;
+    }
+
+    /* Video fills the 16:9 box while preserving aspect ratio (no cropping) */
+    .video-fill video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      position: static !important;
+      transform: none !important;
+      display: block;
+    }
   </style>
 </head>
 
-<body
-  class="bg-[#2f3a3f] text-[#dfeaf8] font-body selection:bg-[#cfe0ff] selection:text-[#2f3a3f] flex flex-col min-h-screen">
+  <body
+    class="bg-[#2f3a3f] text-[#dfeaf8] font-body selection:bg-[#cfe0ff] selection:text-[#2f3a3f] flex flex-col min-h-screen pb-20">
   <!-- TopNavBar (JSON Applied) -->
   <nav
     class="fixed top-0 w-full z-50 bg-[#2f3a3f]/95 backdrop-blur-xl flex justify-between items-center px-8 py-6 max-w-full mx-auto shadow-none">
@@ -275,16 +331,27 @@
         href="about.html">About</a>
     </div>
   </nav>
-  <main class="pt-32 flex-grow">
+  <main class="flex-grow">
+    <style>
+      /* Place main below fixed nav and remove extra bottom padding from body */
+      main {
+        margin-top: var(--nav-height, 0px);
+        margin-bottom: 0;
+      }
+
+      body {
+        padding-bottom: 0 !important;
+      }
+    </style>
     <!-- Hero: Showreel & Motion -->
-    <section class="w-full max-w-7xl mx-auto px-8 mb-12">
-      <div class="aspect-video relative w-full overflow-hidden bg-[#2f3a3f]">
+    <section class="w-full max-w-7xl mx-auto px-8 mb-0">
+      <div class="video-fill relative w-full overflow-hidden bg-[#2f3a3f]">
         <button id="video-overlay-play" class="video-overlay-play" type="button" aria-label="Play video">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M8 5v14l11-7z" />
           </svg>
         </button>
-        <video class="w-full h-full object-cover" controls playsinline preload="metadata">
+        <video controls playsinline preload="metadata">
           <source
             src="https://media.nathanjuno.com/Showreel_09_2026_v002.mp4"
             type="video/mp4">
@@ -295,7 +362,7 @@
   </main>
   <!-- Footer (JSON Applied) -->
   <footer
-    class="w-full py-0 px-8 mt-0 mb-6 bg-[#2f3a3f] flex flex-col md:flex-row justify-between items-center gap-6">
+    class="fixed bottom-0 left-0 w-full py-4 px-8 bg-[#2f3a3f] flex flex-col md:flex-row justify-between items-center gap-6 z-50">
     <div class="flex items-center gap-8">
       <a href="https://www.linkedin.com/in/nathan-juno-6a80242/" target="_blank" rel="noopener noreferrer"
         aria-label="LinkedIn Profile">
@@ -319,67 +386,7 @@
     </div>
   </footer>
   <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-  <script>
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('video').forEach((video) => {
-        if (!video.closest('main')) return;
-        const overlayButton = document.getElementById('video-overlay-play');
-        new Plyr(video, {
-          controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-          keyboard: { focused: true, global: true },
-          ratio: '16:9'
-        });
-
-        if (overlayButton) {
-          const updateOverlayButton = () => {
-            const svgPath = overlayButton.querySelector('svg path');
-            const atStart = video.currentTime === 0;
-
-            if (video.ended) {
-              if (svgPath) {
-                svgPath.setAttribute('d', 'M12 5V1L8 5l4 4V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z');
-              }
-              overlayButton.classList.remove('is-hidden');
-              overlayButton.setAttribute('aria-label', 'Replay video');
-            } else if (atStart && video.paused) {
-              if (svgPath) {
-                svgPath.setAttribute('d', 'M8 5v14l11-7z');
-              }
-              overlayButton.classList.remove('is-hidden');
-              overlayButton.setAttribute('aria-label', 'Play video');
-            } else {
-              overlayButton.classList.add('is-hidden');
-            }
-          };
-
-          overlayButton.addEventListener('click', () => {
-            if (video.ended) {
-              video.currentTime = 0;
-            }
-            if (video.paused) {
-              video.play().catch(() => {});
-            } else {
-              video.pause();
-            }
-          });
-
-          video.addEventListener('play', updateOverlayButton);
-          video.addEventListener('pause', updateOverlayButton);
-          video.addEventListener('ended', updateOverlayButton);
-          video.addEventListener('seeked', updateOverlayButton);
-          updateOverlayButton();
-        }
-      });
-    });
-  </script>
+  <script src="player-init.js"></script>
 </body>
 
 </html>
