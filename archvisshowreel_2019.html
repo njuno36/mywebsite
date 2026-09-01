@@ -115,6 +115,16 @@
       color: #b7d3ff;
     }
 
+    nav a[href="work.html"] {
+      color: #dfeaf8;
+    }
+
+    nav a[href="work.html"]:hover,
+    nav a[href="work.html"]:focus-visible {
+      color: #b7d3ff;
+      text-decoration: underline;
+    }
+
     body .text-slate-400,
     body .text-slate-500,
     body .text-slate-600,
@@ -240,21 +250,59 @@
       background: transparent !important;
       padding: 0 !important;
     }
+    .video-shell {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100vh - var(--nav-height, 0px) - var(--footer-height, 0px));
+    }
+
+    .video-header {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      margin-bottom: 0.5rem;
+      pointer-events: none;
+    }
+
     /* Video fills available viewport height and scales by height (no stretching) */
     .video-fill {
       position: relative;
       width: 100%;
-      height: calc(100vh - var(--nav-height, 0px) - var(--footer-height, 0px));
+      height: calc(100vh - var(--nav-height, 0px) - var(--footer-height, 0px) - 3.25rem);
       overflow: hidden;
       background: #2f3a3f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Preserve 16:9 ratio while scaling to available height without distortion */
-    .video-fill {
-      display: flex;
-      /* anchor player to the bottom of the available area so controls stay fixed */
-      align-items: flex-end;
+    .page-close {
+      position: fixed;
+      top: 5.5rem;
+      right: 1.25rem;
+      z-index: 60;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
+      width: auto;
+      height: auto;
+      font-size: 2rem;
+      line-height: 1;
+      color: #dfeaf8;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      text-decoration: none;
+      transition: color 180ms ease, transform 180ms ease;
+      padding: 0;
+      pointer-events: auto;
+    }
+
+    .page-close:hover,
+    .page-close:focus-visible {
+      color: #b7d3ff;
+      transform: translateY(-1px);
     }
 
     /* The Plyr container will maintain a 16:9 box that is as tall as possible */
@@ -317,7 +365,7 @@
       <a class="text-slate-400 dark:text-slate-500 font-['Inter'] text-sm tracking-wide hover:text-slate-600 dark:hover:text-slate-100 underline-offset-4 hover:underline transition-transform hover:translate-y-[-2px]"
         href="index.html">Showreel</a>
       <a class="text-slate-400 dark:text-slate-500 font-['Inter'] text-sm tracking-wide hover:text-slate-600 dark:hover:text-slate-100 underline-offset-4 hover:underline transition-transform hover:translate-y-[-2px]"
-        href="archive.html">Archive</a>
+        href="work.html">Work</a>
       <a class="text-slate-400 dark:text-slate-500 font-['Inter'] text-sm tracking-wide hover:text-slate-600 dark:hover:text-slate-100 underline-offset-4 hover:underline transition-transform hover:translate-y-[-2px]"
         href="about.html">About</a>
     </div>
@@ -328,7 +376,7 @@
       class="hidden absolute top-full right-0 w-56 bg-[#2f3a3f] border border-[#3f4d53] rounded-b-lg shadow-xl p-6 flex flex-col gap-4 md:hidden">
       <a class="text-[#dfeaf8] font-['Inter'] text-lg transition-colors hover:text-[#b7d3ff]" href="index.html">Showreel</a>
       <a class="text-[#dfeaf8] font-['Inter'] text-lg font-medium transition-colors hover:text-[#b7d3ff]"
-        href="archive.html">Archive</a>
+        href="work.html">Work</a>
       <a class="text-[#dfeaf8] font-['Inter'] text-lg transition-colors hover:text-[#b7d3ff]"
         href="about.html">About</a>
     </div>
@@ -346,7 +394,10 @@
       }
     </style>
     <!-- Hero: Showreel & Motion -->
-    <section class="w-full max-w-7xl mx-auto px-8 mb-0">
+    <section class="video-shell w-full max-w-7xl mx-auto px-8 mb-0">
+      <div class="video-header">
+        <a href="work.html" class="page-close" aria-label="Back to Work">×</a>
+      </div>
       <div class="video-fill relative w-full overflow-hidden bg-[#2f3a3f]">
         <button id="video-overlay-play" class="video-overlay-play" type="button" aria-label="Play video">
           <svg viewBox="0 0 24 24" aria-hidden="true">

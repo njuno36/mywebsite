@@ -115,6 +115,30 @@
       color: #b7d3ff;
     }
 
+    nav a.current-page {
+      color: #dfeaf8 !important;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-weight: 500;
+    }
+
+    nav a.current-page:hover,
+    nav a.current-page:focus-visible {
+      color: #b7d3ff !important;
+    }
+
+    #mobile-menu a.current-page {
+      color: #dfeaf8 !important;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-weight: 500;
+    }
+
+    #mobile-menu a.current-page:hover,
+    #mobile-menu a.current-page:focus-visible {
+      color: #b7d3ff !important;
+    }
+
     body .text-slate-400,
     body .text-slate-500,
     body .text-slate-600,
@@ -314,9 +338,9 @@
       </div>
     </div>
     <div class="hidden md:flex items-center gap-12">
-      <a class="text-slate-700 dark:text-slate-500 font-['Inter'] text-sm tracking-wide" href="index.html">Showreel</a>
+      <a class="current-page text-slate-700 dark:text-slate-500 font-['Inter'] text-sm tracking-wide" href="index.html">Showreel</a>
       <a class="text-slate-400 dark:text-slate-500 font-['Inter'] text-sm tracking-wide hover:text-slate-600 dark:hover:text-slate-100 underline-offset-4 hover:underline transition-transform hover:translate-y-[-2px]"
-        href="archive.html">Archive</a>
+        href="work.html">Work</a>
       <a class="text-slate-400 dark:text-slate-500 font-['Inter'] text-sm tracking-wide hover:text-slate-600 dark:hover:text-slate-100 underline-offset-4 hover:underline transition-transform hover:translate-y-[-2px]"
         href="about.html">About</a>
     </div>
@@ -325,9 +349,9 @@
     </button>
     <div id="mobile-menu"
       class="hidden absolute top-full right-0 w-56 bg-[#2f3a3f] border border-[#3f4d53] rounded-b-lg shadow-xl p-6 flex flex-col gap-4 md:hidden">
-      <a class="text-[#dfeaf8] font-['Inter'] text-lg font-medium transition-colors hover:text-[#b7d3ff]" href="index.html">Showreel</a>
+      <a class="current-page text-[#dfeaf8] font-['Inter'] text-lg font-medium transition-colors hover:text-[#b7d3ff]" href="index.html">Showreel</a>
       <a class="text-[#dfeaf8] font-['Inter'] text-lg transition-colors hover:text-[#b7d3ff]"
-        href="archive.html">Archive</a>
+        href="work.html">Work</a>
       <a class="text-[#dfeaf8] font-['Inter'] text-lg transition-colors hover:text-[#b7d3ff]"
         href="about.html">About</a>
     </div>
